@@ -38,6 +38,7 @@ data["Month"] = data["DateKey"].dt.month_name()
 data["Month_Number"] = data["DateKey"].dt.month
 data["Day_Name"] = data["DateKey"].dt.day_name()
 data["Day_Number"] = data["DateKey"].dt.day_name()
+#data["States"] = data["States"]
 
 # create day number column.
 data["Day_Number"].replace(

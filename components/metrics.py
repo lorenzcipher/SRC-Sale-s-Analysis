@@ -2,6 +2,7 @@ import streamlit as sl
 import plotly.graph_objects as go
 import plotly.express as px
 import duckdb as db
+import pandas as pd
 
 # ============= Evaluate Revenue ====================
 @sl.cache_data
@@ -16,13 +17,15 @@ def plot_gsales_metric(
     reference=None,
 ):
     if data is not None:
-        gross_sales = data["SaleAmount"].sum()
+        my_floats = data["SaleAmount"].astype(float)
+        print('float',my_floats)
+        gross_sales = my_floats.sum()
         sales = db.sql(
             f"""
             SELECT
                 Month,
                 Month_Number,
-                sum(SaleAmount) as sales
+                sum(CAST(SaleAmount AS DECIMAL)) as sales
             from data
             Group by Month, Month_Number
             Order by Month_Number
@@ -93,83 +96,6 @@ def plot_gsales_metric(
         sl.plotly_chart(fig, use_container_width=True)
 
 
-@sl.cache_data
-def plot_nsales_metric(
-    label=None,
-    prefix="",
-    suffix="",
-    data=None,
-    show_graph=True,
-    show_bar=True,
-    color_graph="",
-):
-    if data is not None:
-        net_sales = data["SaleAmount"].sum() - data["ReturnAmount"].sum()
-        n_sales = db.sql(
-            f"""
-            SELECT
-                Month,
-                Month_Number,
-                sum((SaleAmount - ReturnAmount)) as sales
-            from data
-            Group by Month, Month_Number
-            Order by Month_Number
-            """
-        ).df()
-
-        fig = go.Figure()
-
-        fig.add_trace(
-            go.Indicator(
-                value=net_sales,
-                gauge={"axis": {"visible": False}},
-                number={
-                    "prefix": prefix,
-                    "suffix": suffix,
-                    "font.size": 40,
-                    "font.color": "#e6e7e5",
-                },
-                title={
-                    "text": label,
-                    "font": {"size": 18, "color": "#e6e7e5"},
-                },
-            )
-        )
-
-        if show_graph:
-            if show_bar:
-                fig.add_trace(
-                    go.Bar(
-                        x=n_sales.Month,
-                        y=n_sales.sales,
-                        marker=dict(color="rgba(0,104,201,0.3)"),
-                    )
-                )
-            else:
-                fig.add_trace(
-                    go.Scatter(
-                        x=n_sales.Month,
-                        y=n_sales.sales,
-                        hoverinfo="skip",
-                        fill="tozeroy",
-                        fillcolor=color_graph,
-                        line={
-                            "color": color_graph,
-                        },
-                    )
-                )
-
-        fig.update_xaxes(visible=False, fixedrange=True)
-        fig.update_yaxes(visible=False, fixedrange=True)
-        fig.update_layout(
-            margin=dict(t=30, b=0),
-            showlegend=False,
-            plot_bgcolor="rgba(0,0,0,0)",
-            paper_bgcolor="rgba(0,0,0,0)",
-            height=100,
-        )
-
-        sl.plotly_chart(fig, use_container_width=True)
 
 
 @sl.cache_data
@@ -261,7 +187,7 @@ def plot_actual_trans_metric(
     color_graph="",
 ):
     if data is not None:
-        actual_trans = data[data["ReturnAmount"] == 0]["SalesKey"].count()
+        actual_trans = data[data["ProfitAmount"] != 0]["SalesKey"].count()
         a_trans = db.sql(
             f"""
             SELECT
@@ -269,7 +195,7 @@ def plot_actual_trans_metric(
                 Month_Number,
                 count(SalesKey) as transactions
             from data
-            where ReturnAmount = 0
+            where ProfitAmount <> 0
             Group by Month, Month_Number
             Order by Month_Number
             """
@@ -525,12 +451,12 @@ def plot_sales_by_channel(df):
         f"""
         WITH aggregate_sales AS (
             SELECT
-                ChannelName,
+                Feedback,
                 SUM(SaleAmount) AS Sales
             FROM
                 df
             GROUP BY 
-                ChannelName
+                Feedback
         )
 
         SELECT * FROM aggregate_sales
@@ -539,7 +465,7 @@ def plot_sales_by_channel(df):
 
     fig = px.pie(
         channel_sales,
-        names="ChannelName",
+        names="Feedback",
         values="Sales",
         hole=0.4,
     )
@@ -922,13 +848,13 @@ def plot_refund_metric(
     reference=None,
 ):
     if data is not None:
-        treturn = data["ReturnAmount"].sum()
+        treturn = data["ProfitAmount"].sum()
         returns = db.sql(
             f"""
             SELECT
                 Month,
                 Month_Number,
-                sum(ReturnAmount) as returns
+                sum(ProfitAmount) as returns
             from data
             Group by Month, Month_Number
             Order by Month_Number
@@ -1227,24 +1153,30 @@ def plot_return_by_month(df):
 
 
 def get_reference(years, contin, data, measure):
-    previous_yr_data = ""
+    previous_yr_data = pd.DataFrame()
     if len(years) == 1:
         current_yr = years[0]
         if current_yr > data["Year"].min():
-            previous_yr_data = data[data["Year"] == current_yr - 1]
-            previous_yr_data = previous_yr_data[
-                previous_yr_data["ContinentName"] == contin
-            ]
+            #previous_yr_data = data[data["Year"] == current_yr - 1]
+            #previous_yr_data = previous_yr_data[
+            #    previous_yr_data["States"] == contin
+            #]
+            previous_yr_data = data[(data.States == contin) & (data.Year == (current_yr - 1))]
+            print('previous_yr_data',previous_yr_data)
 
             refs = previous_yr_data[measure].sum()
-            return refs
+            print('refs',refs)
+            return None
         else:
+
             previous_yr_data = data[data["Year"] == current_yr]
+
             previous_yr_data = previous_yr_data[
-                previous_yr_data["ContinentName"] == contin
+                previous_yr_data["States"] == contin
             ]
 
             refs = previous_yr_data[measure].sum()
+        
             return refs
     else:
         refs = None

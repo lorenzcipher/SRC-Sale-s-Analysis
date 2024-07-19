@@ -4,7 +4,6 @@ from components.metrics import (
     plot_transact_by_day,
     plot_sales_by_day,
     plot_gsales_metric,
-    plot_nsales_metric,
     plot_trans_metric,
     plot_actual_trans_metric,
     plot_sales_by_month,
@@ -37,7 +36,7 @@ from components.css import css
 sl.markdown(css, unsafe_allow_html=True)
 
 sl.sidebar.image("img/logo.jpg", use_column_width=True)
-sl.header("Consoto Sale's Analysis :bar_chart:")
+sl.header("Rapide Services Car II : Sale's Analysis :bar_chart:")
 with sl.sidebar:
 
     selected = option_menu(
@@ -55,50 +54,46 @@ if selected == "Revenue":
     with sl.sidebar:
         year = data["Year"].unique()
         year.sort()
-        continent = data["ContinentName"].unique()
+        continent = data["States"].unique()
         continent.sort()
 
         sl.header("Apply Filter")
-        checked = sl.checkbox("Check this box to select multiple continents")
-
+        checked = sl.checkbox("Check this box to select multiple states")
+        
         if checked:
             contin = sl.multiselect(
-                "Select Continent", options=continent, default=continent
+                "Select State", options=continent, default=continent
             )
         else:
-            contin = sl.selectbox("Select Continent", options=continent)
+            contin = sl.selectbox("Select State", options=continent)
+
+        
         # data = data[data["ContinentName"].isin(contin)]
         # promotion = data["PromotionName"].unique()
         years = sl.multiselect("Select Year", options=year, default=year)
         # promo = sl.multiselect("Select Promo", options=promotion, default=promotion[1])
 
     # filt_data = data.query("ContinentName == @contin")
-    filtered_data = data.query("ContinentName == @contin & Year == @years")
+    filtered_data = data.query("States == @contin & Year == @years")
 
     # ======= Display Snapshots of sales =========
-    gsales, nsales, trans, act_trans = sl.columns(4)
+    gsales,  trans, act_trans = sl.columns(3)
     # gsales.metric(label="**Gross Sales**", value=millify(gross_sales, precision=2))
     if checked:
         reference = None
     else:
         reference = get_reference(years, contin, data, "SaleAmount")
+       
 
     with gsales:
         plot_gsales_metric(
             label="Gross Revenue",
             data=filtered_data,
-            prefix="$",
+            suffix=" €",
             color_graph="rgba(0, 104, 201, 0.2)",
             reference=reference,
         )
-    # nsales.metric(label="**Net Sales**", value=millify(net_sales, precision=2))
-    with nsales:
-        plot_nsales_metric(
-            label="Net Revenue",
-            data=filtered_data,
-            prefix="$",
-            color_graph="rgba(0, 104, 201, 0.2)",
-        )
+    
     # trans.metric(label="**Total Transactions**", value=millify(num_trans))
     with trans:
         plot_trans_metric(
@@ -145,7 +140,7 @@ elif selected == "Profit":
     with sl.sidebar:
         year = data["Year"].unique()
         year.sort()
-        continent = data["ContinentName"].unique()
+        continent = data["States"].unique()
         continent.sort()
 
         sl.header("Apply Filter")
@@ -163,7 +158,7 @@ elif selected == "Profit":
         # promo = sl.multiselect("Select Promo", options=promotion, default=promotion[1])
 
     # filt_data = data.query("ContinentName == @contin")
-    filtered_data = data.query("ContinentName == @contin & Year == @years")
+    filtered_data = data.query("States == @contin & Year == @years")
 
     left_col, right_col = sl.columns([2, 1])
     if checked:
@@ -196,7 +191,7 @@ elif selected == "Refunds":
     with sl.sidebar:
         year = data["Year"].unique()
         year.sort()
-        continent = data["ContinentName"].unique()
+        continent = data["States"].unique()
         continent.sort()
 
         sl.header("Apply Filter")
@@ -214,7 +209,7 @@ elif selected == "Refunds":
         # promo = sl.multiselect("Select Promo", options=promotion, default=promotion[1])
 
     # filt_data = data.query("ContinentName == @contin")
-    filtered_data = data.query("ContinentName == @contin & Year == @years")
+    filtered_data = data.query("States == @contin & Year == @years")
 
     metric_left, metric_right = sl.columns([2, 1])
     if checked:
