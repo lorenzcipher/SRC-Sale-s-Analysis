@@ -187,7 +187,7 @@ elif selected == "Profit":
     with right_col:
         plot_profit_by_category(filtered_data)
         plot_profit_by_product(filtered_data)
-elif selected == "Refunds":
+elif selected == "forecasting":
     with sl.sidebar:
         year = data["Year"].unique()
         year.sort()
@@ -208,35 +208,4 @@ elif selected == "Refunds":
         years = sl.multiselect("Select Year", options=year, default=year)
         # promo = sl.multiselect("Select Promo", options=promotion, default=promotion[1])
 
-    # filt_data = data.query("ContinentName == @contin")
-    filtered_data = data.query("States == @contin & Year == @years")
-
-    metric_left, metric_right = sl.columns([2, 1])
-    if checked:
-        reference = None
-    else:
-        reference = get_reference(years, contin, data, "ReturnAmount")
-
-    with metric_left:
-        trefund, refundm = sl.columns(2)
-        with trefund:
-            plot_refund_metric(
-                "Amount Refunded",
-                prefix="$",
-                data=filtered_data,
-                show_bar=False,
-                color_graph="rgba(172,23,23,0.2)",
-                reference=reference,
-            )
-        with refundm:
-            plot_refundmargin_metric(
-                "Refund Margin",
-                suffix="%",
-                data=filtered_data,
-                color_graph="rgba(172,23,23,0.2)",
-            )
-        "---"
-        plot_return_by_month(filtered_data)
-    with metric_right:
-        plot_returnq_by_category(filtered_data)
-        plot_return_amount_by_category(filtered_data)
+    
