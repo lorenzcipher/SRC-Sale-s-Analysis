@@ -476,7 +476,7 @@ def plot_sales_by_channel(df):
         plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
         height=300,
-        title_text="Total Revenue by Channel",
+        title_text="Total Revenue by FeedBack",
         title_x=0.1,
     )
 
