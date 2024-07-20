@@ -41,7 +41,7 @@ with sl.sidebar:
 
     selected = option_menu(
         menu_title="Dashboard",
-        options=["Revenue", "Profit", "Refunds"],
+        options=["Revenue", "Profit", "forecasting"],
         icons=["receipt-cutoff", "cash-coin", "currency-dollar"],
         default_index=0,
         orientation="vertical",
