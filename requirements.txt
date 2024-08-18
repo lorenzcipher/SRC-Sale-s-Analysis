@@ -1,4 +1,3 @@
-pip install --upgrade pip
 duckdb
 setuptools
 streamlit_extras
