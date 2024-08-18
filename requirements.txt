@@ -6,6 +6,6 @@ streamlit_extras
 streamlit_option_menu
 seaborn 
 statsmodels
-sklearn
+scikit-learn
 numpy
 pmdarima
