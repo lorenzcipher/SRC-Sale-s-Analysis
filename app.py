@@ -14,7 +14,6 @@ from sklearn.metrics import r2_score
 import numpy as np
 import streamlit as sl
 import plotly.graph_objects as go
-import pickle
 
 from streamlit_option_menu import option_menu
 from components.metrics import (

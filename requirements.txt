@@ -4,3 +4,8 @@ setuptools
 streamlit
 streamlit_extras
 streamlit_option_menu
+seaborn 
+statsmodels
+sklearn
+numpy
+pmdarima
