@@ -39,7 +39,7 @@ from components.metrics import (
 
 
 
-
+sl.legacy_caching.clear_cache()
 # ========= Page setup ======================
 sl.set_page_config(page_title="Sales Dashboard", page_icon=":bar_chart:", layout="wide")
 

@@ -1,13 +1,13 @@
-duckdb
-setuptools
-streamlit_extras
-streamlit_option_menu
-streamlit
-pandas
-matplotlib
-seaborn
-statsmodels
-pmdarima
-scikit-learn
-numpy
-plotly
+duckdb==1.0.0
+setuptools==72.2.0
+streamlit_extras==0.4.7
+streamlit_option_menu==0.3.13
+streamlit==1.37.1
+pandas==2.2.2  # Ensure compatibility with numpy
+matplotlib==3.9.2
+seaborn==0.13.2
+statsmodels==0.14.2
+pmdarima==1.8.2  # Compatible with recent numpy
+scikit-learn==1.5.1
+numpy==1.23.5  # Use a version compatible with other packages
+plotly==5.13.0
