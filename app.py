@@ -5,7 +5,6 @@ from statsmodels.graphics.tsaplots import plot_acf
 from statsmodels.graphics.tsaplots import plot_pacf
 from statsmodels.tsa.arima.model import ARIMA
 import statsmodels.api as sm
-import pmdarima as pm
 from pmdarima import auto_arima
 from pmdarima.arima.utils import ndiffs
 from sklearn.metrics import mean_squared_error
