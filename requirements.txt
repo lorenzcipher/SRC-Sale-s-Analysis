@@ -4,10 +4,10 @@ streamlit_extras==0.4.7
 streamlit_option_menu==0.3.13
 streamlit==1.37.1  # Specified version
 pandas==1.5.3  # Compatible version
-matplotlib==3.9.2  # Latest compatible version
-seaborn==0.13.2  # Latest compatible version
-statsmodels==0.14.2  # Latest compatible version
-pmdarima==1.8.2  # Latest version
+matplotlib==3.9.2  # Compatible version
+seaborn==0.13.2  # Compatible version
+statsmodels==0.14.2  # Compatible version
+pmdarima==1.8.1  # Compatible version with numpy < 1.20
 scikit-learn==1.5.3  # Latest version
-numpy==1.23.5  # Latest compatible version
+numpy==1.19.5  # Compatible version for pmdarima
 plotly==5.14.0  # Latest version
