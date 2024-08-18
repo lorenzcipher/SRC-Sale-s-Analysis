@@ -1,11 +1,13 @@
 duckdb
-plotly
 setuptools
-streamlit
 streamlit_extras
 streamlit_option_menu
-seaborn 
+streamlit
+pandas
+matplotlib
+seaborn
 statsmodels
+pmdarima
 scikit-learn
 numpy
-pmdarima
+plotly
