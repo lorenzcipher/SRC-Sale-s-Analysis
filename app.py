@@ -36,7 +36,7 @@ from components.metrics import (
     plot_return_by_month,
     get_reference,
 )
-    
+
 
 
 # ========= Page setup ======================
@@ -259,19 +259,7 @@ elif selected == "forecasting":
             sl.subheader("Model Summary")
             sl.text(model.summary())
 
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
             # Create an interactive plot using Plotly
             fig = go.Figure()
 
