@@ -36,10 +36,9 @@ from components.metrics import (
     plot_return_by_month,
     get_reference,
 )
+    
 
 
-
-sl.legacy_caching.clear_cache()
 # ========= Page setup ======================
 sl.set_page_config(page_title="Sales Dashboard", page_icon=":bar_chart:", layout="wide")
 
@@ -214,7 +213,7 @@ elif selected == "forecasting":
     uploaded_file = sl.file_uploader("Upload a CSV file with time series data", type="csv")
     if uploaded_file:
         data = pd.read_csv(uploaded_file, parse_dates=['DateKey'])
-        sl.write("Data Preview:", data.head())
+        sl.write("Data Preview:", data)
 
         # User Input for ARIMA Parameters
         p = sl.sidebar.number_input("Select Max p (AR term)", min_value=0, value=1)
